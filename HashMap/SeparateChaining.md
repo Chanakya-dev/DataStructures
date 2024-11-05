@@ -50,7 +50,6 @@ public void put(K key, V value) {
 ### Overall Implementation
 
 ```java
-
 import java.util.LinkedList;
 
 public class CustomHashMap<K, V> {
@@ -137,5 +136,4 @@ public class CustomHashMap<K, V> {
         System.out.println(hashMap.get("apple")); // Output: null
     }
 }
-
 ```
