@@ -169,7 +169,6 @@ public class CustomHashMap<K, V> {
     private int size;
     private int capacity;
 
-    // Inner class to represent a key-value pair
     private static class Entry<K, V> {
         K key;
         V value;
@@ -180,90 +179,68 @@ public class CustomHashMap<K, V> {
         }
     }
 
-    // Constructor to initialize the hash table
     public CustomHashMap(int capacity) {
         this.capacity = capacity;
         this.table = new Entry[capacity];
         this.size = 0;
     }
 
-    // Hash function to compute the index for the key
     private int getHash(K key) {
         return Math.abs(key.hashCode()) % capacity;
     }
 
     public void put(K key, V value) {
-        int index = getHash(key); // Get the primary index for the key
-
-        // Check for insertion or update
+        int index = getHash(key);
         for (int i = 0; i < capacity; i++) {
-            int probingIndex = (index + i * i) % capacity; // Quadratic probing
-
-            // If the spot is empty, insert the new entry
+            int probingIndex = (index + i * i) % capacity;
             if (table[probingIndex] == null) {
                 table[probingIndex] = new Entry<>(key, value);
                 size++;
                 return;
             }
-
-            // If the key already exists, update the value
             if (table[probingIndex].key.equals(key)) {
                 table[probingIndex].value = value;
                 return;
             }
         }
-
         throw new RuntimeException("HashMap is full");
     }
 
     public V get(K key) {
-        int index = getHash(key); // Get the primary index for the key
-
-        // Search for the key using quadratic probing
+        int index = getHash(key);
         for (int i = 0; i < capacity; i++) {
-            int probingIndex = (index + i * i) % capacity; // Quadratic probing
-
-            // If the spot is empty, the key is not in the map
+            int probingIndex = (index + i * i) % capacity;
             if (table[probingIndex] == null) {
                 return null;
             }
-
-            // Return the value if the key is found
             if (table[probingIndex].key.equals(key)) {
                 return table[probingIndex].value;
             }
         }
-
-        return null; // Key not found
+        return null;
     }
 
     public void remove(K key) {
-        int index = getHash(key); // Get the primary index for the key
-
-        // Search for the key using quadratic probing
+        int index = getHash(key);
         for (int i = 0; i < capacity; i++) {
-            int probingIndex = (index + i * i) % capacity; // Quadratic probing
-
-            // If the spot is empty, the key is not in the map
+            int probingIndex = (index + i * i) % capacity;
             if (table[probingIndex] == null) {
-                return; // Key not found; exit method
+                return;
             }
-
-            // Remove the entry if the key is found
             if (table[probingIndex].key.equals(key)) {
-                table[probingIndex] = null; // Remove the entry
-                size--; // Decrement size
+                table[probingIndex] = null;
+                size--;
                 return;
             }
         }
     }
 
     public int size() {
-        return size; // Return the current size of the hash map
+        return size;
     }
 
     public boolean isEmpty() {
-        return size == 0; // Return true if the hash map is empty
+        return size == 0;
     }
 
     public static void main(String[] args) {
@@ -279,4 +256,5 @@ public class CustomHashMap<K, V> {
         System.out.println(hashMap.get("apple")); // Output: null
     }
 }
+
 ```
