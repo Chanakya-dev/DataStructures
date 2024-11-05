@@ -1,36 +1,6 @@
-   ```java
-   private int primaryHash(K key) {
-        return key.hashCode() % table.length;
-    }
+# Custom HashMap Implementation with Double Hashing
 
-    private int secondaryHash(K key) {
-        return 1 + (key.hashCode() % 7); // Using 7 as a prime constant
-    }
-
-    public void put(K key, V value) {
-        int primaryIndex = primaryHash(key);
-
-        if (table[primaryIndex] == null) {
-            table[primaryIndex] = new Entry<>(key, value);
-            size++;
-            return;
-        }
-
-        // Collision occurred
-        int stepSize = secondaryHash(key);
-        for (int i = 0; i < table.length; i++) {
-            int newIndex = (primaryIndex + i * stepSize) % table.length;
-
-            if (table[newIndex] == null || table[newIndex].isDeleted) {
-                table[newIndex] = new Entry<>(key, value);
-                size++;
-                return;
-            }
-        }
-        throw new RuntimeException("HashMap is full");
-    }
-    ```
-    ## Overview of Double Hashing
+## Overview of Double Hashing
 
 1. **Primary Hash Function**:
    - This function determines the initial index for the key.
@@ -137,10 +107,10 @@ After inserting all the keys, the hash table will look like this:
 | 8     | 12    |
 | 9     | Empty |
 
-### Overall Implementation
+## Overall Implementation
 
 ```java
-   public class CustomHashMap<K, V> {
+public class CustomHashMap<K, V> {
     private Entry<K, V>[] table;
     private int size;
     private int capacity;
@@ -237,6 +207,5 @@ After inserting all the keys, the hash table will look like this:
         hashMap.remove("apple");
         System.out.println(hashMap.get("apple")); // Output: null
     }
-    }
-
+}
 ```
