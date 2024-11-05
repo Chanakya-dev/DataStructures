@@ -47,28 +47,6 @@ public void put(K key, V value) {
 
 ---
 
-
-```java
-public void put(K key, V value) {
-    int index = getHash(key); // Get the hash index for the key
-
-    // Initialize the list if it doesn't exist at the index
-    if (table[index] == null) {
-        table[index] = new LinkedList<>(); // Create a new list for this index
-    }
-
-    // Check if the key already exists in the list
-    for (Entry<K, V> entry : table[index]) {
-        if (entry.key.equals(key)) {
-            entry.value = value; // Update the existing value
-            return; // Exit the method after updating
-        }
-    }
-
-    // If the key doesn't exist, add a new entry to the list
-    table[index].add(new Entry<>(key, value));
-}
-```
 ### Overall Implementation
 
 ```java
@@ -80,12 +58,10 @@ public class CustomHashMap<K, V> {
     private int size;
 
     public CustomHashMap(int capacity) {
-        // Create an array of linked lists for the hash table
         table = new LinkedList[capacity];
         size = 0;
     }
 
-    // Inner class to represent a key-value pair
     private static class Entry<K, V> {
         K key;
         V value;
@@ -96,69 +72,56 @@ public class CustomHashMap<K, V> {
         }
     }
 
-    // Hash function to compute the index for the key
     private int getHash(K key) {
         return Math.abs(key.hashCode()) % table.length;
     }
 
     public void put(K key, V value) {
-        int index = getHash(key); // Get the hash index for the key
-
-        // Initialize the list if it doesn't exist at the index
+        int index = getHash(key);
         if (table[index] == null) {
-            table[index] = new LinkedList<>(); // Create a new list for this index
+            table[index] = new LinkedList<>();
         }
-
-        // Check if the key already exists in the list
         for (Entry<K, V> entry : table[index]) {
             if (entry.key.equals(key)) {
-                entry.value = value; // Update the existing value
-                return; // Exit the method after updating
+                entry.value = value;
+                return;
             }
         }
-
-        // If the key doesn't exist, add a new entry to the list
         table[index].add(new Entry<>(key, value));
-        size++; // Increment the size of the hash map
+        size++;
     }
 
     public V get(K key) {
-        int index = getHash(key); // Get the hash index for the key
-
-        // Check if the list exists at the index
+        int index = getHash(key);
         if (table[index] != null) {
-            // Search for the key in the linked list
             for (Entry<K, V> entry : table[index]) {
                 if (entry.key.equals(key)) {
-                    return entry.value; // Return the value if found
+                    return entry.value;
                 }
             }
         }
-        return null; // Return null if the key is not found
+        return null;
     }
 
     public void remove(K key) {
-        int index = getHash(key); // Get the hash index for the key
-
-        // Check if the list exists at the index
+        int index = getHash(key);
         if (table[index] != null) {
-            // Search for the key in the linked list
             for (Entry<K, V> entry : table[index]) {
                 if (entry.key.equals(key)) {
-                    table[index].remove(entry); // Remove the entry from the list
-                    size--; // Decrement the size of the hash map
-                    return; // Exit the method after removing
+                    table[index].remove(entry);
+                    size--;
+                    return;
                 }
             }
         }
     }
 
     public int size() {
-        return size; // Return the current size of the hash map
+        return size;
     }
 
     public boolean isEmpty() {
-        return size == 0; // Return true if the hash map is empty
+        return size == 0;
     }
 
     public static void main(String[] args) {
@@ -174,4 +137,5 @@ public class CustomHashMap<K, V> {
         System.out.println(hashMap.get("apple")); // Output: null
     }
 }
+
 ```
