@@ -115,7 +115,7 @@ public class CustomHashMap<K, V> {
     private int size;
     private int capacity;
 
-    // Inner class to represent a key-value pair
+
     private static class Entry<K, V> {
         K key;
         V value;
@@ -126,73 +126,71 @@ public class CustomHashMap<K, V> {
         }
     }
 
-    // Constructor to initialize the hash table
     public CustomHashMap(int capacity) {
         this.capacity = capacity;
         this.table = new Entry[capacity];
         this.size = 0;
     }
 
-    // Hash function to compute the index for the key
+
     private int getHash(K key) {
         return Math.abs(key.hashCode()) % capacity;
     }
 
-    // Secondary hash function for double hashing
     private int getStepSize(K key) {
         int prime = 7; // A small prime number
         return prime - (Math.abs(key.hashCode()) % prime);
     }
 
     public void put(K key, V value) {
-        int index = getHash(key); // Get the primary index for the key
-        int stepSize = getStepSize(key); // Get the step size for double hashing
+        int index = getHash(key); 
+        int stepSize = getStepSize(key); 
 
         while (table[index] != null) {
             if (table[index].key.equals(key)) {
-                table[index].value = value; // Update the existing value
-                return; // Exit the method after updating
+                table[index].value = value; 
+                return; 
             }
-            index = (index + stepSize) % capacity; // Move to the next index using the step size
+            index = (index + stepSize) % capacity; 
         }
 
-        table[index] = new Entry<>(key, value); // Add the new entry to the table
-        size++; // Increment the size of the hash map
+        table[index] = new Entry<>(key, value); 
+        size++;
     }
 
     public V get(K key) {
-        int index = getHash(key); // Get the primary index for the key
-        int stepSize = getStepSize(key); // Get the step size for double hashing
+        int index = getHash(key); 
+        int stepSize = getStepSize(key);
 
         while (table[index] != null) {
             if (table[index].key.equals(key)) {
-                return table[index].value; // Return the value if found
+                return table[index].value; 
             }
-            index = (index + stepSize) % capacity; // Move to the next index using the step size
+            index = (index + stepSize) % capacity; 
         }
-        return null; // Return null if the key is not found
+        return null;
     }
 
     public void remove(K key) {
-        int index = getHash(key); // Get the primary index for the key
-        int stepSize = getStepSize(key); // Get the step size for double hashing
+        int index = getHash(key); 
+        int stepSize = getStepSize(key);
 
         while (table[index] != null) {
             if (table[index].key.equals(key)) {
-                table[index] = null; // Remove the entry from the table
-                size--; // Decrement the size of the hash map
-                return; // Exit the method after removing
+                table[index] = null; 
+                size--; 
+                return; 
             }
-            index = (index + stepSize) % capacity; // Move to the next index using the step size
+            index = (index + stepSize) % capacity;
         }
     }
 
     public int size() {
-        return size; // Return the current size of the hash map
+        return size; 
     }
 
     public boolean isEmpty() {
-        return size == 0; // Return true if the hash map is empty
+        return size == 0;
     }
 
     public static void main(String[] args) {
@@ -201,11 +199,11 @@ public class CustomHashMap<K, V> {
         hashMap.put("banana", 20);
         hashMap.put("orange", 30);
 
-        System.out.println(hashMap.get("apple")); // Output: 10
-        System.out.println(hashMap.get("banana")); // Output: 20
+        System.out.println(hashMap.get("apple"));
+        System.out.println(hashMap.get("banana")); 
 
         hashMap.remove("apple");
-        System.out.println(hashMap.get("apple")); // Output: null
+        System.out.println(hashMap.get("apple")); 
     }
 }
 ```
