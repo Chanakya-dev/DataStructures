@@ -18,6 +18,7 @@ public class CircularLinkedList {
         if (head == null) {
             head = newNode;
             newNode.next = head;
+            System.out.println(data + " added at the end.");
             return;
         }
         Node current = head;
@@ -26,24 +27,46 @@ public class CircularLinkedList {
         }
         current.next = newNode;
         newNode.next = head;
+        System.out.println(data + " added at the end.");
+    }
+
+    // Method to add a node at the beginning
+    public void addNodeAtBeginning(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            newNode.next = head;
+            System.out.println(data + " added at the beginning.");
+            return;
+        }
+        Node last = head;
+        while (last.next != head) {
+            last = last.next;
+        }
+        newNode.next = head;
+        head = newNode;
+        last.next = head;
+        System.out.println(data + " added at the beginning.");
     }
 
     // Method to delete a node from the beginning
     public void deleteNodeAtBeginning() {
-        if (head != null) {
-            if (head.next == head) {
-                head = null;
-            } else {
-                Node current = head;
-                while (current.next != head) {
-                    current = current.next;
-                }
-                head = head.next;
-                current.next = head;
-            }
-        } else {
+        if (head == null) {
             System.out.println("List is empty!");
+            return;
         }
+        if (head.next == head) {
+            head = null;
+            System.out.println("Node deleted from the beginning.");
+            return;
+        }
+        Node last = head;
+        while (last.next != head) {
+            last = last.next;
+        }
+        head = head.next;
+        last.next = head;
+        System.out.println("Node deleted from the beginning.");
     }
 
     // Method to delete a node from the end
@@ -54,6 +77,7 @@ public class CircularLinkedList {
         }
         if (head.next == head) {
             head = null;
+            System.out.println("Node deleted from the end.");
             return;
         }
         Node current = head;
@@ -65,6 +89,7 @@ public class CircularLinkedList {
             temp = temp.next;
         }
         temp.next = head;
+        System.out.println("Node deleted from the end.");
     }
 
     // Method to search a node
@@ -75,10 +100,12 @@ public class CircularLinkedList {
         Node current = head;
         do {
             if (current.data == data) {
+                System.out.println("Node with value " + data + " found.");
                 return true;
             }
             current = current.next;
         } while (current != head);
+        System.out.println("Node with value " + data + " not found.");
         return false;
     }
 
@@ -96,16 +123,54 @@ public class CircularLinkedList {
         System.out.println("(circular)");
     }
 
+    // Method to clear the list
+    public void clearList() {
+        head = null;
+        System.out.println("List cleared.");
+    }
+
+    // Method to get the size of the list
+    public int getSize() {
+        if (head == null) {
+            return 0;
+        }
+        int count = 1;
+        Node current = head;
+        while (current.next != head) {
+            current = current.next;
+            count++;
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         CircularLinkedList list = new CircularLinkedList();
+        
+        // Adding nodes
         list.addNodeAtEnd(10);
         list.addNodeAtEnd(20);
         list.addNodeAtEnd(30);
+        list.addNodeAtBeginning(5);
+        
+        // Displaying the list
         list.displayList();
-        list.deleteNodeAtEnd();
-        list.displayList();
+        
+        // Deleting nodes
         list.deleteNodeAtBeginning();
+        list.deleteNodeAtEnd();
+        
+        // Displaying the updated list
         list.displayList();
-        System.out.println("Node with value 20 exists: " + list.searchNode(20));
+        
+        // Searching for nodes
+        list.searchNode(20);
+        list.searchNode(10);
+        
+        // Size of the list
+        System.out.println("Size of the list: " + list.getSize());
+        
+        // Clearing the list
+        list.clearList();
+        list.displayList();
     }
 }
