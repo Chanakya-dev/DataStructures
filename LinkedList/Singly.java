@@ -61,6 +61,7 @@ public class SinglyLinkedList {
 
         // Insert the new node at the specified index
         newNode.next = current.next;
+        // Transfering old value to next Index
         current.next = newNode;
     }
 

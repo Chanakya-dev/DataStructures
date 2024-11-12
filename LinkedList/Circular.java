@@ -18,7 +18,6 @@ public class CircularLinkedList {
         if (head == null) {
             head = newNode;
             newNode.next = head;
-            System.out.println(data + " added at the end.");
             return;
         }
         Node current = head;
@@ -27,7 +26,6 @@ public class CircularLinkedList {
         }
         current.next = newNode;
         newNode.next = head;
-        System.out.println(data + " added at the end.");
     }
 
     // Method to add a node at the beginning
@@ -36,7 +34,6 @@ public class CircularLinkedList {
         if (head == null) {
             head = newNode;
             newNode.next = head;
-            System.out.println(data + " added at the beginning.");
             return;
         }
         Node last = head;
@@ -46,7 +43,27 @@ public class CircularLinkedList {
         newNode.next = head;
         head = newNode;
         last.next = head;
-        System.out.println(data + " added at the beginning.");
+    }
+
+    // Method to add a node at a specific position
+    public void addNodeAtPosition(int position, int data) {
+        if (position < 1 || position > getSize() + 1) {
+            System.out.println("Invalid position!");
+            return;
+        }
+        if (position == 1) {
+            addNodeAtBeginning(data);
+            return;
+        }
+        Node newNode = new Node(data);
+        Node current = head;
+        int count = 1;
+        while (count < position - 1 && current.next != head) {
+            current = current.next;
+            count++;
+        }
+        newNode.next = current.next;
+        current.next = newNode;
     }
 
     // Method to delete a node from the beginning
@@ -57,7 +74,6 @@ public class CircularLinkedList {
         }
         if (head.next == head) {
             head = null;
-            System.out.println("Node deleted from the beginning.");
             return;
         }
         Node last = head;
@@ -66,7 +82,6 @@ public class CircularLinkedList {
         }
         head = head.next;
         last.next = head;
-        System.out.println("Node deleted from the beginning.");
     }
 
     // Method to delete a node from the end
@@ -77,19 +92,36 @@ public class CircularLinkedList {
         }
         if (head.next == head) {
             head = null;
-            System.out.println("Node deleted from the end.");
             return;
         }
         Node current = head;
+        Node previous = null;
         while (current.next != head) {
+            previous = current;
             current = current.next;
         }
-        Node temp = head;
-        while (temp.next != current) {
-            temp = temp.next;
+        previous.next = head;
+    }
+
+    // Method to delete a node at a specific position
+    public void deleteNodeAtPosition(int position) {
+        if (position < 1 || position > getSize()) {
+            System.out.println("Invalid position!");
+            return;
         }
-        temp.next = head;
-        System.out.println("Node deleted from the end.");
+        if (position == 1) {
+            deleteNodeAtBeginning();
+            return;
+        }
+        Node current = head;
+        Node previous = null;
+        int count = 1;
+        while (count < position && current.next != head) {
+            previous = current;
+            current = current.next;
+            count++;
+        }
+        previous.next = current.next;
     }
 
     // Method to search a node
@@ -100,13 +132,25 @@ public class CircularLinkedList {
         Node current = head;
         do {
             if (current.data == data) {
-                System.out.println("Node with value " + data + " found.");
                 return true;
             }
             current = current.next;
         } while (current != head);
-        System.out.println("Node with value " + data + " not found.");
         return false;
+    }
+
+    // Method to get data at a specific position
+    public int getNodeAtPosition(int position) {
+        if (position < 1 || position > getSize()) {
+            throw new IllegalArgumentException("Invalid position!");
+        }
+        Node current = head;
+        int count = 1;
+        while (count < position && current.next != head) {
+            current = current.next;
+            count++;
+        }
+        return current.data;
     }
 
     // Method to display the list
@@ -126,7 +170,6 @@ public class CircularLinkedList {
     // Method to clear the list
     public void clearList() {
         head = null;
-        System.out.println("List cleared.");
     }
 
     // Method to get the size of the list
@@ -145,31 +188,22 @@ public class CircularLinkedList {
 
     public static void main(String[] args) {
         CircularLinkedList list = new CircularLinkedList();
-        
-        // Adding nodes
         list.addNodeAtEnd(10);
         list.addNodeAtEnd(20);
         list.addNodeAtEnd(30);
         list.addNodeAtBeginning(5);
-        
-        // Displaying the list
+        list.addNodeAtPosition(2, 15);
         list.displayList();
-        
-        // Deleting nodes
+
         list.deleteNodeAtBeginning();
         list.deleteNodeAtEnd();
-        
-        // Displaying the updated list
+        list.deleteNodeAtPosition(2);
         list.displayList();
-        
-        // Searching for nodes
-        list.searchNode(20);
-        list.searchNode(10);
-        
-        // Size of the list
+
+        System.out.println("Node at position 2: " + list.getNodeAtPosition(2));
+        System.out.println("List contains 20: " + list.searchNode(20));
         System.out.println("Size of the list: " + list.getSize());
-        
-        // Clearing the list
+
         list.clearList();
         list.displayList();
     }
